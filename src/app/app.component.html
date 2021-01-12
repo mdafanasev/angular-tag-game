@@ -1,0 +1,36 @@
+<ng-container *ngIf='(cells$ | async) as cells'>
+
+  <!-- Controls -->
+  <button (click)='startGame()' *ngIf='(gameState$ | async) === "NOT_STARTED"'>
+    Start
+  </button>
+  <button (click)='pauseGame()' *ngIf='(gameState$ | async) === "ACTIVE"'>
+    Pause
+  </button>
+
+  <!-- Results -->
+  <div *ngIf='(gameState$ | async) === "FINISHED"'>
+    <button (click)='playAgain()'>Play again</button>
+    <div>Game over</div>
+    <ng-container *ngIf='(scores$ | async) as scores'>
+      <div>
+        <span>Your scores:</span>
+        <span>{{ scores.player }}</span>
+      </div>
+      <div>
+        <span>NPC scores:</span>
+        <span>{{ scores.npc }}</span>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Board -->
+  <div class='board'>
+    <app-cell
+      *ngFor='let cell of cells; let index = index'
+      [data]='cell'
+      (touch)='touchCell(index)'
+    ></app-cell>
+  </div>
+
+</ng-container>
